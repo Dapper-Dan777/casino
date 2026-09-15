@@ -1,0 +1,1 @@
+import{t as e}from"./SportView-9Px9Ib2o.js";var t=e;export{t as component};

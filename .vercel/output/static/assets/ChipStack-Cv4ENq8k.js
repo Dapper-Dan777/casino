@@ -1,0 +1,1 @@
+import{s as e}from"./link-XIRh00or.js";import{F as t}from"./index-DH6jg4jG.js";var n=e();function r({n:e=4,tone:r=`gold`}){let i=Math.min(8,Math.max(1,e));return(0,n.jsx)(`div`,{className:t(`chip-stack`,`chip-${r}`),"aria-hidden":!0,children:Array.from({length:i},(e,t)=>(0,n.jsx)(`i`,{style:{bottom:t*3}},t))})}export{r as t};

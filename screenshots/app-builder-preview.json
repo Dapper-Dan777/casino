@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Aurelia",
+      "hasCanvas": false,
+      "bodyTextLen": 2880,
+      "bodyTextHash": "9973e56d8087cb262bf5e08022516758de9901caf4a7497e3cf40aaf15224a0c",
+      "bodyTextPrefix": "AURELIA NETWORK 18+ Democasino Nur für Personen ab 18 Jahren. Ei",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Aurelia",
+      "hasCanvas": false,
+      "bodyTextLen": 3259,
+      "bodyTextHash": "b28aa57cee7fe6d247421e55f81dc32ab39a2362b6b25582e35be947167a910f",
+      "bodyTextPrefix": "AURELIA NETWORK 18+ Democasino Nur für Personen ab 18 Jahren. Ei",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+}

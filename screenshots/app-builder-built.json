@@ -1,0 +1,41 @@
+{
+  "url": "http://127.0.0.1:8081/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Aurelia",
+      "hasCanvas": false,
+      "bodyTextLen": 2127,
+      "bodyTextHash": "ae84a66047f263ad0293874c01b588aeec0ff7d77cfb3dc39e2550535d3cd558",
+      "bodyTextPrefix": "AURELIA NETWORK 18+ Democasino Nur für Personen ab 18 Jahren. Ei",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Aurelia",
+      "hasCanvas": false,
+      "bodyTextLen": 2084,
+      "bodyTextHash": "18ed8ee3ce36764ee7af8b13947c61d6c2360e3f7e893cb56851eafbf42c3dca",
+      "bodyTextPrefix": "AURELIA NETWORK 18+ Democasino Nur für Personen ab 18 Jahren. Ei",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-built.json",
+  "divergesFromBaseline": true,
+  "baselineReasons": [
+    "desktop: body text changed (2795 -> 2127 chars, hash mismatch)",
+    "mobile: body text changed (2782 -> 2084 chars, hash mismatch)"
+  ]
+}

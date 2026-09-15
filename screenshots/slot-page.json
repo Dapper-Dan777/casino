@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/spiel/pharaos-erbe",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Aurelia",
+      "hasCanvas": false,
+      "bodyTextLen": 576,
+      "bodyTextHash": "ae8f778ffb78356926043f07b7997a2a5adca2060b8d420d1f276c6c6e39574e",
+      "bodyTextPrefix": "AURELIA Privates Spielhaus Nur für Personen ab 18 Jahren. Aureli",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/slot-page.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Aurelia",
+      "hasCanvas": false,
+      "bodyTextLen": 516,
+      "bodyTextHash": "993e858a58d1c37ebc4a815449d6582c9893f72311508eb719a3d9d16af818f0",
+      "bodyTextPrefix": "AURELIA Privates Spielhaus Nur für Personen ab 18 Jahren. Aureli",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/slot-page-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/slot-page.json"
+}
