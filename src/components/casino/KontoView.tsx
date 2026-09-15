@@ -6,8 +6,12 @@ import { streakReward, vipOf } from "@/lib/casino/operator";
 import { useCasino } from "@/lib/casino/store";
 import { formatOdds } from "@/lib/casino/sport";
 import { cn } from "@/lib/utils";
+import { signOut } from "@/lib/auth/client";
+import { useCurrentUserState } from "@/lib/auth/use-current-user";
+import { LogOut } from "lucide-react";
 
 export function KontoView() {
+  const { user } = useCurrentUserState();
   const balance = useCasino((s) => s.balance);
   const wagered = useCasino((s) => s.wagered);
   const wageredToday = useCasino((s) => s.wageredToday);
@@ -29,8 +33,26 @@ export function KontoView() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-8">
-      <p className="text-xs uppercase tracking-[0.28em] text-accent">Konto</p>
-      <h1 className="font-display text-4xl">Übersicht</h1>
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p className="text-xs uppercase tracking-[0.28em] text-accent">Konto</p>
+          <h1 className="mt-1 font-display text-4xl">Übersicht</h1>
+          {user ? (
+            <p className="mt-2 text-sm text-muted">
+              {user.displayName ?? "Spieler"}
+              {user.primaryEmail ? ` · ${user.primaryEmail}` : ""}
+            </p>
+          ) : null}
+        </div>
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() => void signOut("/preview")}
+        >
+          <LogOut />
+          Logout
+        </Button>
+      </div>
       <div className="grid grid-cols-2 gap-3">
         <Stat label="Guthaben" value={formatEuro(balance)} />
         <Stat label="VIP" value={rank.name} />

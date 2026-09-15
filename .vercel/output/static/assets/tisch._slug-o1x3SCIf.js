@@ -1,0 +1,1 @@
+import{L as e}from"./index-BtMqx7zI.js";var t=e;export{t as errorComponent};

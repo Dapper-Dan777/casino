@@ -1,7 +1,7 @@
-import { i as __toESM, r as __require, t as __commonJSMin } from "../../_runtime.mjs";
+import { i as __require, o as __toESM, t as __commonJSMin } from "../../_runtime.mjs";
 import { o as require_jsx_runtime, s as require_react } from "../@radix-ui/react-collection+[...].mjs";
 import { r as parseHref } from "../tanstack__history.mjs";
-import { d as require_react_dom } from "../@radix-ui/react-dialog+[...].mjs";
+import { m as require_react_dom } from "../@radix-ui/react-dialog+[...].mjs";
 import { PassThrough, Readable } from "node:stream";
 import { ReadableStream as ReadableStream$1 } from "node:stream/web";
 //#region node_modules/@tanstack/router-core/dist/esm/not-found.js
@@ -4424,6 +4424,31 @@ function useNavigate(_defaultOpts) {
 		});
 	}, [_defaultOpts?.from, router]);
 }
+/**
+* Component that triggers a navigation when rendered. Navigation executes
+* in an effect after mount/update.
+*
+* Props are the same as `NavigateOptions` used by `navigate()`.
+*
+* @returns null
+* @link https://tanstack.com/router/latest/docs/framework/react/api/router/navigateComponent
+*/
+function Navigate(props) {
+	const router = useRouter();
+	const navigate = useNavigate();
+	const previousPropsRef = import_react.useRef(null);
+	useLayoutEffect(() => {
+		if (previousPropsRef.current !== props) {
+			navigate(props);
+			previousPropsRef.current = props;
+		}
+	}, [
+		router,
+		props,
+		navigate
+	]);
+	return null;
+}
 //#endregion
 //#region node_modules/@tanstack/react-router/dist/esm/useRouteContext.js
 function useRouteContext(opts) {
@@ -5132,6 +5157,26 @@ function RouterProvider({ router, ...rest }) {
 		...rest,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Matches, {})
 	});
+}
+//#endregion
+//#region node_modules/@tanstack/react-router/dist/esm/useLocation.js
+/**
+* Read the current location from the router state with optional selection.
+* Useful for subscribing to just the pieces of location you care about.
+*
+* Options:
+* - `select`: Project the `location` object to a derived value
+* - `structuralSharing`: Enable structural sharing for stable references
+*
+* @returns The current location (or selected value).
+* @link https://tanstack.com/router/latest/docs/framework/react/api/router/useLocationHook
+*/
+function useLocation(opts) {
+	const router = useRouter();
+	{
+		const location = router.stores.location.get();
+		return opts?.select ? opts.select(location) : location;
+	}
 }
 //#endregion
 //#region node_modules/@tanstack/react-router/dist/esm/Asset.js
@@ -14542,4 +14587,4 @@ var renderRouterToStream = async ({ request, router, responseHeaders, children }
 	throw new Error("No renderToReadableStream or renderToPipeableStream found in react-dom/server. Ensure you are using a version of react-dom that supports streaming.");
 };
 //#endregion
-export { createSieveCache as A, getScriptPreloadAttrs as C, _getRenderedMatches as D, resolveManifestCssLink as E, rootRouteId as F, isNotFound as I, isRedirect as M, isResolvedRedirect as N, executeRewriteInput as O, decodePath as P, createInlineCssStyleAsset as S, resolveManifestAssetLink as T, Link as _, isSsrResponse as a, TSR_SCRIPT_BARRIER_ID as b, stripSsrResponseBody as c, RouterProvider as d, createRouter as f, createRootRoute as g, createFileRoute as h, disposeSsrResponseDetached as i, dehydrateSsrMatchId as j, invariant as k, Scripts as l, lazyRouteComponent as m, bindSsrResponseToRequest as n, normalizeSsrResponse as o, Outlet as p, defineHandlerCallback as r, replaceSsrResponse as s, renderRouterToStream as t, HeadContent as u, useRouter as v, getStylesheetHref as w, createInlineCssPlaceholderAsset as x, GLOBAL_TSR as y };
+export { executeRewriteInput as A, createInlineCssPlaceholderAsset as C, resolveManifestAssetLink as D, getStylesheetHref as E, isResolvedRedirect as F, decodePath as I, rootRouteId as L, createSieveCache as M, dehydrateSsrMatchId as N, resolveManifestCssLink as O, isRedirect as P, isNotFound as R, TSR_SCRIPT_BARRIER_ID as S, getScriptPreloadAttrs as T, createRootRoute as _, isSsrResponse as a, useRouter as b, stripSsrResponseBody as c, useLocation as d, RouterProvider as f, createFileRoute as g, lazyRouteComponent as h, disposeSsrResponseDetached as i, invariant as j, _getRenderedMatches as k, Scripts as l, Outlet as m, bindSsrResponseToRequest as n, normalizeSsrResponse as o, createRouter as p, defineHandlerCallback as r, replaceSsrResponse as s, renderRouterToStream as t, HeadContent as u, Link as v, createInlineCssStyleAsset as w, GLOBAL_TSR as x, Navigate as y };

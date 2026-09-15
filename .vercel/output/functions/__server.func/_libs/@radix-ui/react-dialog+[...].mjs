@@ -1,153 +1,7 @@
-import { i as __toESM, t as __commonJSMin } from "../../_runtime.mjs";
+import { o as __toESM, t as __commonJSMin } from "../../_runtime.mjs";
 import { a as useComposedRefs, i as createSlot, n as createContextScope, o as require_jsx_runtime, s as require_react } from "./react-collection+[...].mjs";
 import { t as composeEventHandlers } from "../radix-ui__primitive.mjs";
 import { __assign, __rest, __spreadArray } from "tslib";
-//#region node_modules/@radix-ui/react-use-layout-effect/dist/index.mjs
-var import_react = /* @__PURE__ */ __toESM(require_react(), 1);
-var useLayoutEffect2 = globalThis?.document ? import_react.useLayoutEffect : () => {};
-//#endregion
-//#region node_modules/@radix-ui/react-id/dist/index.mjs
-var __defProp$10 = Object.defineProperty;
-var __name$10 = (target, value) => __defProp$10(target, "name", {
-	value,
-	configurable: true
-});
-var useReactId = import_react[" useId ".trim().toString()] || (() => void 0);
-var count$1 = 0;
-function useId(deterministicId) {
-	const [id, setId] = import_react.useState(useReactId());
-	useLayoutEffect2(() => {
-		if (!deterministicId) setId((reactId) => reactId ?? String(count$1++));
-	}, [deterministicId]);
-	return deterministicId || (id ? `radix-${id}` : "");
-}
-__name$10(useId, "useId");
-//#endregion
-//#region node_modules/@radix-ui/react-use-effect-event/dist/index.mjs
-var __defProp$9 = Object.defineProperty;
-var __name$9 = (target, value) => __defProp$9(target, "name", {
-	value,
-	configurable: true
-});
-var useReactEffectEvent = import_react[" useEffectEvent ".trim().toString()];
-var useReactInsertionEffect = import_react[" useInsertionEffect ".trim().toString()];
-function useEffectEvent(callback) {
-	if (typeof useReactEffectEvent === "function") return useReactEffectEvent(callback);
-	const ref = import_react.useRef(() => {
-		throw new Error("Cannot call an event handler while rendering.");
-	});
-	if (typeof useReactInsertionEffect === "function") useReactInsertionEffect(() => {
-		ref.current = callback;
-	});
-	else useLayoutEffect2(() => {
-		ref.current = callback;
-	});
-	return import_react.useMemo(() => ((...args) => ref.current?.(...args)), []);
-}
-__name$9(useEffectEvent, "useEffectEvent");
-//#endregion
-//#region node_modules/@radix-ui/react-use-controllable-state/dist/index.mjs
-var __defProp$8 = Object.defineProperty;
-var __name$8 = (target, value) => __defProp$8(target, "name", {
-	value,
-	configurable: true
-});
-var useInsertionEffect = import_react[" useInsertionEffect ".trim().toString()] || useLayoutEffect2;
-function useControllableState({ prop, defaultProp, onChange = /* @__PURE__ */ __name$8(() => {}, "onChange"), caller }) {
-	const [uncontrolledProp, setUncontrolledProp, onChangeRef] = useUncontrolledState({
-		defaultProp,
-		onChange
-	});
-	const isControlled = prop !== void 0;
-	return [isControlled ? prop : uncontrolledProp, import_react.useCallback((nextValue) => {
-		if (isControlled) {
-			const value2 = isFunction(nextValue) ? nextValue(prop) : nextValue;
-			if (value2 !== prop) onChangeRef.current?.(value2);
-		} else setUncontrolledProp(nextValue);
-	}, [
-		isControlled,
-		prop,
-		setUncontrolledProp,
-		onChangeRef
-	])];
-}
-__name$8(useControllableState, "useControllableState");
-function useUncontrolledState({ defaultProp, onChange }) {
-	const [value, setValue] = import_react.useState(defaultProp);
-	const prevValueRef = import_react.useRef(value);
-	const onChangeRef = import_react.useRef(onChange);
-	useInsertionEffect(() => {
-		onChangeRef.current = onChange;
-	}, [onChange]);
-	import_react.useEffect(() => {
-		if (prevValueRef.current !== value) {
-			onChangeRef.current?.(value);
-			prevValueRef.current = value;
-		}
-	}, [value, prevValueRef]);
-	return [
-		value,
-		setValue,
-		onChangeRef
-	];
-}
-__name$8(useUncontrolledState, "useUncontrolledState");
-function isFunction(value) {
-	return typeof value === "function";
-}
-__name$8(isFunction, "isFunction");
-var SYNC_STATE = Symbol("RADIX:SYNC_STATE");
-function useControllableStateReducer(reducer, userArgs, initialArg, init) {
-	const { prop: controlledState, defaultProp, onChange: onChangeProp, caller } = userArgs;
-	const isControlled = controlledState !== void 0;
-	const onChange = useEffectEvent(onChangeProp);
-	const args = [{
-		...initialArg,
-		state: defaultProp
-	}];
-	if (init) args.push(init);
-	const [internalState, dispatch] = import_react.useReducer((state2, action) => {
-		if (action.type === SYNC_STATE) return {
-			...state2,
-			state: action.state
-		};
-		const next = reducer(state2, action);
-		if (isControlled && !Object.is(next.state, state2.state)) onChange(next.state);
-		return next;
-	}, ...args);
-	const uncontrolledState = internalState.state;
-	const prevValueRef = import_react.useRef(uncontrolledState);
-	import_react.useEffect(() => {
-		if (prevValueRef.current !== uncontrolledState) {
-			prevValueRef.current = uncontrolledState;
-			if (!isControlled) onChange(uncontrolledState);
-		}
-	}, [
-		uncontrolledState,
-		prevValueRef,
-		isControlled
-	]);
-	const state = import_react.useMemo(() => {
-		if (controlledState !== void 0) return {
-			...internalState,
-			state: controlledState
-		};
-		return internalState;
-	}, [internalState, controlledState]);
-	import_react.useEffect(() => {
-		if (isControlled && !Object.is(controlledState, internalState.state)) dispatch({
-			type: SYNC_STATE,
-			state: controlledState
-		});
-	}, [
-		controlledState,
-		internalState.state,
-		isControlled
-	]);
-	return [state, dispatch];
-}
-__name$8(useControllableStateReducer, "useControllableStateReducer");
-//#endregion
 //#region node_modules/react-dom/cjs/react-dom.production.js
 /**
 * @license React
@@ -303,6 +157,152 @@ var require_react_dom = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	checkDCE();
 	module.exports = require_react_dom_production();
 }));
+//#endregion
+//#region node_modules/@radix-ui/react-use-layout-effect/dist/index.mjs
+var import_react = /* @__PURE__ */ __toESM(require_react(), 1);
+var useLayoutEffect2 = globalThis?.document ? import_react.useLayoutEffect : () => {};
+//#endregion
+//#region node_modules/@radix-ui/react-id/dist/index.mjs
+var __defProp$10 = Object.defineProperty;
+var __name$10 = (target, value) => __defProp$10(target, "name", {
+	value,
+	configurable: true
+});
+var useReactId = import_react[" useId ".trim().toString()] || (() => void 0);
+var count$1 = 0;
+function useId(deterministicId) {
+	const [id, setId] = import_react.useState(useReactId());
+	useLayoutEffect2(() => {
+		if (!deterministicId) setId((reactId) => reactId ?? String(count$1++));
+	}, [deterministicId]);
+	return deterministicId || (id ? `radix-${id}` : "");
+}
+__name$10(useId, "useId");
+//#endregion
+//#region node_modules/@radix-ui/react-use-effect-event/dist/index.mjs
+var __defProp$9 = Object.defineProperty;
+var __name$9 = (target, value) => __defProp$9(target, "name", {
+	value,
+	configurable: true
+});
+var useReactEffectEvent = import_react[" useEffectEvent ".trim().toString()];
+var useReactInsertionEffect = import_react[" useInsertionEffect ".trim().toString()];
+function useEffectEvent(callback) {
+	if (typeof useReactEffectEvent === "function") return useReactEffectEvent(callback);
+	const ref = import_react.useRef(() => {
+		throw new Error("Cannot call an event handler while rendering.");
+	});
+	if (typeof useReactInsertionEffect === "function") useReactInsertionEffect(() => {
+		ref.current = callback;
+	});
+	else useLayoutEffect2(() => {
+		ref.current = callback;
+	});
+	return import_react.useMemo(() => ((...args) => ref.current?.(...args)), []);
+}
+__name$9(useEffectEvent, "useEffectEvent");
+//#endregion
+//#region node_modules/@radix-ui/react-use-controllable-state/dist/index.mjs
+var __defProp$8 = Object.defineProperty;
+var __name$8 = (target, value) => __defProp$8(target, "name", {
+	value,
+	configurable: true
+});
+var useInsertionEffect = import_react[" useInsertionEffect ".trim().toString()] || useLayoutEffect2;
+function useControllableState({ prop, defaultProp, onChange = /* @__PURE__ */ __name$8(() => {}, "onChange"), caller }) {
+	const [uncontrolledProp, setUncontrolledProp, onChangeRef] = useUncontrolledState({
+		defaultProp,
+		onChange
+	});
+	const isControlled = prop !== void 0;
+	return [isControlled ? prop : uncontrolledProp, import_react.useCallback((nextValue) => {
+		if (isControlled) {
+			const value2 = isFunction(nextValue) ? nextValue(prop) : nextValue;
+			if (value2 !== prop) onChangeRef.current?.(value2);
+		} else setUncontrolledProp(nextValue);
+	}, [
+		isControlled,
+		prop,
+		setUncontrolledProp,
+		onChangeRef
+	])];
+}
+__name$8(useControllableState, "useControllableState");
+function useUncontrolledState({ defaultProp, onChange }) {
+	const [value, setValue] = import_react.useState(defaultProp);
+	const prevValueRef = import_react.useRef(value);
+	const onChangeRef = import_react.useRef(onChange);
+	useInsertionEffect(() => {
+		onChangeRef.current = onChange;
+	}, [onChange]);
+	import_react.useEffect(() => {
+		if (prevValueRef.current !== value) {
+			onChangeRef.current?.(value);
+			prevValueRef.current = value;
+		}
+	}, [value, prevValueRef]);
+	return [
+		value,
+		setValue,
+		onChangeRef
+	];
+}
+__name$8(useUncontrolledState, "useUncontrolledState");
+function isFunction(value) {
+	return typeof value === "function";
+}
+__name$8(isFunction, "isFunction");
+var SYNC_STATE = Symbol("RADIX:SYNC_STATE");
+function useControllableStateReducer(reducer, userArgs, initialArg, init) {
+	const { prop: controlledState, defaultProp, onChange: onChangeProp, caller } = userArgs;
+	const isControlled = controlledState !== void 0;
+	const onChange = useEffectEvent(onChangeProp);
+	const args = [{
+		...initialArg,
+		state: defaultProp
+	}];
+	if (init) args.push(init);
+	const [internalState, dispatch] = import_react.useReducer((state2, action) => {
+		if (action.type === SYNC_STATE) return {
+			...state2,
+			state: action.state
+		};
+		const next = reducer(state2, action);
+		if (isControlled && !Object.is(next.state, state2.state)) onChange(next.state);
+		return next;
+	}, ...args);
+	const uncontrolledState = internalState.state;
+	const prevValueRef = import_react.useRef(uncontrolledState);
+	import_react.useEffect(() => {
+		if (prevValueRef.current !== uncontrolledState) {
+			prevValueRef.current = uncontrolledState;
+			if (!isControlled) onChange(uncontrolledState);
+		}
+	}, [
+		uncontrolledState,
+		prevValueRef,
+		isControlled
+	]);
+	const state = import_react.useMemo(() => {
+		if (controlledState !== void 0) return {
+			...internalState,
+			state: controlledState
+		};
+		return internalState;
+	}, [internalState, controlledState]);
+	import_react.useEffect(() => {
+		if (isControlled && !Object.is(controlledState, internalState.state)) dispatch({
+			type: SYNC_STATE,
+			state: controlledState
+		});
+	}, [
+		controlledState,
+		internalState.state,
+		isControlled
+	]);
+	return [state, dispatch];
+}
+__name$8(useControllableStateReducer, "useControllableStateReducer");
 //#endregion
 //#region node_modules/@radix-ui/react-primitive/dist/index.mjs
 var import_react_dom = /* @__PURE__ */ __toESM(require_react_dom(), 1);
@@ -2059,4 +2059,4 @@ function getState(open) {
 }
 __name(getState, "getState");
 //#endregion
-export { DialogOverlay as a, Presence as c, require_react_dom as d, useControllableState as f, DialogDescription as i, useCallbackRef$1 as l, useLayoutEffect2 as m, DialogClose as n, DialogPortal as o, useId as p, DialogContent as r, DialogTitle as s, Dialog as t, Primitive as u };
+export { DialogOverlay as a, Presence as c, useControllableState as d, useId as f, DialogDescription as i, useCallbackRef$1 as l, require_react_dom as m, DialogClose as n, DialogPortal as o, useLayoutEffect2 as p, DialogContent as r, DialogTitle as s, Dialog as t, Primitive as u };

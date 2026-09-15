@@ -1,10 +1,50 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 import type { PaymentMethodId } from "./catalog";
 import { JACKPOT_SEED, MISSIONS, rakebackDue, streakReward, todayKey, type MissionId } from "./operator";
 import { cashoutValue, sportBoard, ticketStatus, type SportTicket } from "./sport";
 
 const SAVE_VERSION = 1;
+const STORE_PREFIX = "aurelia-casino-v1";
+
+export function setCasinoAccountScope(userId: string | null): void {
+  if (typeof globalThis === "undefined") return;
+  (globalThis as typeof globalThis & { __aureliaAccountId?: string | null }).__aureliaAccountId =
+    userId ?? "guest";
+}
+
+function getCasinoStorageKey(): string {
+  if (typeof window === "undefined") return `${STORE_PREFIX}-guest`;
+  const key = (globalThis as typeof globalThis & { __aureliaAccountId?: string | null }).__aureliaAccountId;
+  return `${STORE_PREFIX}-${key ?? "guest"}`;
+}
+
+const casinoStorage = createJSONStorage<Partial<CasinoState>>(() => ({
+  getItem: () => {
+    if (typeof window === "undefined") return null;
+    try {
+      return window.localStorage.getItem(getCasinoStorageKey());
+    } catch {
+      return null;
+    }
+  },
+  setItem: (_name: string, value: string) => {
+    if (typeof window === "undefined") return;
+    try {
+      window.localStorage.setItem(getCasinoStorageKey(), value);
+    } catch {
+      // ignore quota/storage issues
+    }
+  },
+  removeItem: () => {
+    if (typeof window === "undefined") return;
+    try {
+      window.localStorage.removeItem(getCasinoStorageKey());
+    } catch {
+      // ignore
+    }
+  },
+}));
 
 export type TxKind = "deposit" | "withdraw" | "bet" | "win" | "bonus";
 
@@ -425,7 +465,8 @@ export const useCasino = create<CasinoState>()(
       markNotifsRead: () => set((s) => ({ notifs: s.notifs.map((n) => ({ ...n, read: true })) })),
     }),
     {
-      name: "aurelia-casino-v1",
+      name: STORE_PREFIX,
+      storage: casinoStorage,
       skipHydration: true,
       merge: (persisted, current) => {
         const p = (persisted ?? {}) as Partial<CasinoState>;
@@ -456,7 +497,7 @@ export const useCasino = create<CasinoState>()(
       onRehydrateStorage: () => () => {
         useCasino.getState().markHydrated();
       },
-      partialize: (s) => ({
+      partialize: (s): Partial<CasinoState> => ({
         version: s.version,
         ageVerified: s.ageVerified,
         soundOn: s.soundOn,

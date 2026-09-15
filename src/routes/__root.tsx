@@ -1,10 +1,64 @@
-import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
+import { createRootRoute, HeadContent, Navigate, Outlet, Scripts, useLocation } from "@tanstack/react-router";
 import { AuthProvider } from "@/lib/auth/provider";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import { CasinoShell } from "@/components/casino/Shell";
+import { authEnabled } from "@/lib/auth/client";
+import { useCurrentUserState } from "@/lib/auth/use-current-user";
 import appCss from "../styles.css?url";
 
 const APP_NAME = "Aurelia";
+
+function AppRoot() {
+  const location = useLocation();
+  const { user, isPending } = useCurrentUserState();
+
+  const publicPaths = ["/login", "/preview", "/api", "/auth"];
+  const isPublic = publicPaths.some((p) => location.pathname === p || location.pathname.startsWith(`${p}/`));
+
+  if (!isPublic && authEnabled && isPending) {
+    return (
+      <html lang="de" suppressHydrationWarning>
+        <head>
+          <HeadContent />
+        </head>
+        <body className="antialiased bg-[#090b0d] text-white">
+          <div className="grid min-h-screen place-items-center px-4">
+            <div className="text-center">
+              <p className="text-xs uppercase tracking-[0.32em] text-amber-300">Aurelia</p>
+              <p className="mt-4 text-lg text-white/80">Konto wird geladen…</p>
+            </div>
+          </div>
+          <Scripts />
+        </body>
+      </html>
+    );
+  }
+
+  if (!isPublic && authEnabled && !user) {
+    return <Navigate to="/preview" replace />;
+  }
+
+  return (
+    <html lang="de" suppressHydrationWarning>
+      <head>
+        <HeadContent />
+      </head>
+      <body className="antialiased">
+        <PreviewHostBridge />
+        <AuthProvider>
+          {isPublic ? (
+            <Outlet />
+          ) : (
+            <CasinoShell>
+              <Outlet />
+            </CasinoShell>
+          )}
+        </AuthProvider>
+        <Scripts />
+      </body>
+    </html>
+  );
+}
 
 export const Route = createRootRoute({
   head: () => ({
@@ -25,20 +79,5 @@ export const Route = createRootRoute({
       { rel: "apple-touch-icon", href: "/__grok/icon-180.png" },
     ],
   }),
-  component: () => (
-    <html lang="de" suppressHydrationWarning>
-      <head>
-        <HeadContent />
-      </head>
-      <body className="antialiased">
-        <PreviewHostBridge />
-        <AuthProvider>
-          <CasinoShell>
-            <Outlet />
-          </CasinoShell>
-        </AuthProvider>
-        <Scripts />
-      </body>
-    </html>
-  ),
+  component: AppRoot,
 });

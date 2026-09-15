@@ -1,15 +1,23 @@
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
+import { setCasinoAccountScope, useCasino } from "@/lib/casino/store";
+import { useCurrentUserState } from "@/lib/auth/use-current-user";
 
 /**
  * App-wide client provider mounted once near the root (in `src/routes/__root.tsx`):
  *
  *   <AuthProvider><Outlet /></AuthProvider>
  *
- * Better Auth's React client (`@/lib/auth/client`) needs NO context provider —
- * its `useSession()` works standalone — so this is a passthrough today. It's
- * kept as the single, stable mount point for any future client-side providers
- * (e.g. a toast or theme provider) without churning the root shell.
+ * This keeps the active account scope in sync with the logged-in user so every
+ * account keeps its own saved balance, VIP state, favorites, recent games, and
+ * profile data in localStorage.
  */
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const { user } = useCurrentUserState();
+
+  useEffect(() => {
+    setCasinoAccountScope(user?.id ?? null);
+    useCasino.persist.rehydrate();
+  }, [user?.id]);
+
   return <>{children}</>;
 }

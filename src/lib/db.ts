@@ -1,4 +1,28 @@
+import { readdir, readFile } from "node:fs/promises";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
 import { pendingMigrations } from "../../scripts/migration-plan.mjs";
+
+const migrationDir = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "migrations");
+
+async function readMigrationFiles(): Promise<Record<string, string>> {
+  if (typeof import.meta.glob === "function") {
+    return import.meta.glob("/migrations/*.sql", {
+      query: "?raw",
+      import: "default",
+      eager: true,
+    }) as Record<string, string>;
+  }
+
+  const entries = await readdir(migrationDir);
+  const files = entries.filter((name) => name.endsWith(".sql")).sort();
+  const out: Record<string, string> = {};
+  for (const file of files) {
+    out[`/migrations/${file}`] = await readFile(join(migrationDir, file), "utf8");
+  }
+  return out;
+}
 
 /** Which database backend is active. */
 export type DbSource = "neon" | "pglite";
@@ -137,11 +161,7 @@ async function createPgliteSql(): Promise<Sql> {
   // passes serialized on a global chain so concurrent callers never
   // double-apply.
   const migrate = async (): Promise<void> => {
-    const migrations = import.meta.glob("/migrations/*.sql", {
-      query: "?raw",
-      import: "default",
-      eager: true,
-    }) as Record<string, string>;
+    const migrations = await readMigrationFiles();
     const doneRows = await pg.query<{ name: string }>(
       "select name from _migrations",
     );
