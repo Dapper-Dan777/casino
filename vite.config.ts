@@ -156,6 +156,9 @@ export default defineConfig(({ command, isPreview }) => ({
     port: 8081,
     strictPort: false,
   },
+  ssr: {
+    noExternal: ["tslib"],
+  },
   resolve: { tsconfigPaths: true },
   plugins: [
     pgliteBootstrapPlugin(),
@@ -171,6 +174,7 @@ export default defineConfig(({ command, isPreview }) => ({
       ? [
           nitro({
             preset: "vercel",
+            noExternals: ["tslib"],
             // Auto-registers server/middleware/* (the PWA install page +
             // manifest + head-tag middleware). Nitro v3 defaults serverDir to
             // false, so removing this silently unwires /?install=1 on deploys.
