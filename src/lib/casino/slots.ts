@@ -668,38 +668,84 @@ export const SLOT_DEFS: Record<string, SlotDef> = {
   },
 };
 
-// Original Aurelia variants using the existing, tested mechanic families.
+// Original Aurelia variants. These use the shared evaluator, but have their own
+// symbol sets and payout profiles instead of aliasing another game's definition.
 SLOT_DEFS["goldene-halle"] = {
-  ...SLOT_DEFS.kirschkoenig!,
+  ...SHARED,
   slug: "goldene-halle",
-  symbols: ranks("fruit"),
+  symbols: [
+    { id: "sun", label: "Sonne", kind: "low", weight: 16, pays: [0.4, 1.5, 6], pays2: 1 },
+    { id: "bell", label: "Glocke", kind: "low", weight: 14, pays: [0.5, 2, 8], pays2: 1 },
+    { id: "crown", label: "Krone", kind: "mid", weight: 11, pays: [0.8, 3, 12], pays2: 2 },
+    { id: "coin", label: "Goldmünze", kind: "mid", weight: 8, pays: [1, 4, 18], pays2: 2 },
+    { id: "seven", label: "Sieben", kind: "high", weight: 5, pays: [2, 8, 35], pays2: 3 },
+    { id: "wild", label: "Goldwild", kind: "wild", weight: 3, pays: [3, 12, 60] },
+    { id: "star", label: "Stern", kind: "scatter", weight: 3, pays: [0, 0, 0] },
+  ],
   paylines: FIVE_LINES,
   freeSpinCount: 8,
+  freeSpinsFrom: 3,
+  betSteps: [20, 50, 100, 200, 500, 1000, 2500],
+  defaultBet: 50,
+  fsMultiplier: 2,
   mechanic: "leiter",
   leiter: true,
   allPays2: true,
   pityAfter: 10,
 };
 SLOT_DEFS["nova-fruits"] = {
-  ...SLOT_DEFS.goldwolf!,
+  ...SHARED,
   slug: "nova-fruits",
+  symbols: [
+    { id: "berry", label: "Beere", kind: "low", weight: 14, pays: [0.4, 1.2, 5] },
+    { id: "lime", label: "Limette", kind: "low", weight: 13, pays: [0.5, 1.5, 6] },
+    { id: "peach", label: "Pfirsich", kind: "mid", weight: 10, pays: [0.8, 2.5, 10] },
+    { id: "prism", label: "Prisma", kind: "high", weight: 7, pays: [1.2, 4, 18] },
+    { id: "collector", label: "Sammler", kind: "wild", weight: 3, pays: [2, 8, 30] },
+    { id: "coin", label: "Fruchtmünze", kind: "high", weight: 6, pays: [0, 0, 0] },
+  ],
+  freeSpinCount: 0,
+  fsMultiplier: 1,
+  paylines: TEN_LINES,
   mechanic: "firelink",
-  firelinkFrom: 5,
+  firelinkFrom: 4,
   pityAfter: 10,
 };
 SLOT_DEFS["neon-sentinel"] = {
-  ...SLOT_DEFS["neon-drift"]!,
+  ...SHARED,
   slug: "neon-sentinel",
+  symbols: [
+    { id: "pulse", label: "Puls", kind: "low", weight: 14, pays: [0.4, 1.5, 6] },
+    { id: "chip", label: "Chip", kind: "low", weight: 12, pays: [0.5, 2, 8] },
+    { id: "visor", label: "Visier", kind: "mid", weight: 9, pays: [0.8, 3, 12] },
+    { id: "core", label: "Kern", kind: "high", weight: 6, pays: [1.2, 5, 20] },
+    { id: "sentinel", label: "Sentinel", kind: "wild", weight: 3, pays: [3, 12, 45] },
+    { id: "signal", label: "Signal", kind: "scatter", weight: 3, pays: [0, 0, 0] },
+  ],
+  freeSpinsFrom: 3,
+  freeSpinCount: 10,
+  fsMultiplier: 2,
   mechanic: "ways",
   tumble: true,
   pityAfter: 11,
 };
 SLOT_DEFS["royal-risk"] = {
-  ...SLOT_DEFS.kirschkoenig!,
+  ...SHARED,
   slug: "royal-risk",
+  symbols: [
+    { id: "heart", label: "Herz", kind: "low", weight: 15, pays: [0.4, 1.2, 5], pays2: 1 },
+    { id: "diamond", label: "Karo", kind: "low", weight: 13, pays: [0.5, 1.6, 7], pays2: 1 },
+    { id: "club", label: "Kreuz", kind: "mid", weight: 10, pays: [0.8, 2.5, 10], pays2: 2 },
+    { id: "spade", label: "Pik", kind: "mid", weight: 8, pays: [1, 3, 14], pays2: 2 },
+    { id: "royal", label: "Royal", kind: "high", weight: 5, pays: [2, 7, 30], pays2: 3 },
+    { id: "joker", label: "Joker", kind: "wild", weight: 3, pays: [3, 12, 55] },
+  ],
+  paylines: FIVE_LINES,
+  freeSpinsFrom: 99,
+  freeSpinCount: 0,
+  fsMultiplier: 1,
   mechanic: "gamble",
   leiter: true,
-  freeSpinCount: 6,
   pityAfter: 11,
 };
 

@@ -511,7 +511,7 @@ export const GAMES: GameInfo[] = [
   },
   {
     slug: "neon-sentinel",
-    name: "Neon Sentinel",
+    name: "Cyborg: Neon Sentinel",
     tagline: "Cyber Ways · Tumble · Multiplikatoren",
     kind: "slot",
     volatility: "Hoch",
