@@ -107,6 +107,13 @@ const LOCAL_DEV_ORIGINS: string[] = Array.from(
     ]),
   ),
 );
+const vercelOrigins: string[] = [
+  env("VERCEL_URL"),
+  env("VERCEL_BRANCH_URL"),
+  env("VERCEL_PROJECT_PRODUCTION_URL"),
+]
+  .filter((host): host is string => Boolean(host))
+  .map((host) => `https://${host.replace(/^https?:\/\//, "").replace(/\/+$/, "")}`);
 const baseURL = explicitBaseURL ?? {
   // Include loopback hosts so dynamic baseURL resolves for local email/password
   // (not only the preview wildcard).
@@ -119,15 +126,17 @@ const baseURL = explicitBaseURL ?? {
 
 // Origins Better Auth accepts on credentialed POSTs (sign-up/sign-in, etc.).
 // Missing entries here surface as FORBIDDEN "Invalid origin".
-const trustedOrigins: string[] = explicitBaseURL
-  ? [explicitBaseURL, ...LOCAL_DEV_ORIGINS]
-  : [
-      // Host wildcards (matched against Origin's host)
-      ...previewAllowedHosts,
-      // Full-origin wildcards (matched against Origin)
-      ...previewAllowedHosts.flatMap((host) => [`https://${host}`, `http://${host}`]),
-      ...LOCAL_DEV_ORIGINS,
-    ];
+const trustedOrigins: string[] = Array.from(
+  new Set([
+    ...(explicitBaseURL ? [explicitBaseURL.replace(/\/+$/, "")] : []),
+    ...vercelOrigins,
+    // Host wildcards (matched against Origin's host)
+    ...previewAllowedHosts,
+    // Full-origin wildcards (matched against Origin)
+    ...previewAllowedHosts.flatMap((host) => [`https://${host}`, `http://${host}`]),
+    ...LOCAL_DEV_ORIGINS,
+  ]),
+);
 
 const databaseUrl = env("DATABASE_URL");
 
