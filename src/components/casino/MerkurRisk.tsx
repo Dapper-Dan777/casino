@@ -243,8 +243,26 @@ export function MerkurRisk({
 
   if (mode === "leiter") {
     const lit = landing ?? bounce;
+    const secured = step > 1 ? rungs[step - 1] ?? amount : 0;
     return (
       <div className={cn("risk-screen risk-screen-leiter absolute inset-0 z-30 flex flex-col px-3 pb-3 pt-2", bust && "risk-screen-bust")}>
+        <div className="mx-auto grid w-full max-w-[18rem] grid-cols-3 gap-1.5 text-center">
+          <div className="rounded-md border border-white/10 bg-black/20 px-2 py-2">
+            <p className="risk-kicker">Stufe</p>
+            <p className="mt-1 text-sm font-semibold tabular-nums text-fg">{step}/{rungs.length - 1}</p>
+          </div>
+          <div className="rounded-md border border-emerald-300/20 bg-emerald-950/20 px-2 py-2">
+            <p className="risk-kicker">Gesichert</p>
+            <p className="mt-1 text-sm font-semibold tabular-nums text-emerald-200">{formatEuro(secured)}</p>
+          </div>
+          <div className="rounded-md border border-amber-300/20 bg-amber-950/20 px-2 py-2">
+            <p className="risk-kicker">Nächste</p>
+            <p className="mt-1 text-sm font-semibold tabular-nums text-amber-200">{atTop ? "Top" : formatEuro(next)}</p>
+          </div>
+        </div>
+        <p className="mx-auto mt-2 w-full max-w-[18rem] text-center text-[10px] uppercase tracking-[0.16em] text-muted">
+          Licht läuft zwischen Gewinn und 0,00 € · Aufspielen hält die aktuelle Position
+        </p>
         <div className="risk-ladder-frame mx-auto flex min-h-0 w-full max-w-[18rem] flex-1 flex-col">
           <ol className="risk-ladder">
             {rungs.map((v, i) => {
@@ -272,7 +290,7 @@ export function MerkurRisk({
           </ol>
         </div>
         <button type="button" disabled={locked || bust || atTop} onClick={() => void stopLeiter()} className="risk-btn risk-btn-stop mt-3 h-16 w-full max-w-[18rem] self-center text-lg tracking-[0.2em]">
-          Aufspielen
+          {locked ? "Auswertung…" : atTop ? "Top erreicht" : "Aufspielen"}
         </button>
         <div className="mt-2 grid w-full max-w-[18rem] grid-cols-2 gap-2 self-center">
           <button type="button" disabled={locked || bust || pot < 2} onClick={takeHalf} className="risk-btn risk-btn-half">

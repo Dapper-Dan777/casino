@@ -46,7 +46,7 @@ export function Lobby() {
   const live = GAMES.filter((g) => g.family === "live" || g.badge === "Live");
   const tables = GAMES.filter((g) => g.kind === "table" && g.family !== "live");
   const neu = GAMES.filter((g) => g.badge === "Neu");
-  const instants = GAMES.filter((g) => ["wuerfel", "schwelle", "rubbellos", "plinko", "minen", "lift", "keno", "videopoker"].includes(g.slug));
+  const instants = GAMES.filter((g) => ["wuerfel", "hi-lo", "schwelle", "rubbellos", "plinko", "minen", "lift", "keno", "videopoker"].includes(g.slug));
   const sports = GAMES.filter((g) => g.kind === "sport");
   const slots = GAMES.filter((g) => g.kind === "slot" && !g.family);
   const recentGames = recent.map((s) => GAMES.find((g) => g.slug === s)).filter((g): g is GameInfo => Boolean(g));

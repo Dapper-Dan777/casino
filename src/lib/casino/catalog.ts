@@ -378,6 +378,17 @@ export const GAMES: GameInfo[] = [
     family: "studio",
   },
   {
+    slug: "hi-lo",
+    name: "Hi-Lo",
+    tagline: "Höher oder niedriger · steigende Multiplikatoren",
+    kind: "original",
+    volatility: "Mittel",
+    rtp: "99,0 %",
+    badge: "Neu",
+    image: "/games/card-back-red.jpg",
+    family: "studio",
+  },
+  {
     slug: "schwelle",
     name: "Schwelle",
     tagline: "Ziel-Multi · sofort",

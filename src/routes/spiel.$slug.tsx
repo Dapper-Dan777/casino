@@ -10,6 +10,7 @@ import { BienenView } from "@/components/casino/BienenView";
 import { WegeView } from "@/components/casino/WegeView";
 import { TrainView } from "@/components/casino/TrainView";
 import { DiceView } from "@/components/casino/DiceView";
+import { HiLoView } from "@/components/casino/HiLoView";
 import { LimboView } from "@/components/casino/LimboView";
 import { ScratchView } from "@/components/casino/ScratchView";
 import { DragonTigerView } from "@/components/casino/DragonTigerView";
@@ -51,6 +52,7 @@ function GameInner({ slug }: { slug: string }) {
   if (slug === "sicbo") return <SicBoView />;
   if (slug === "videopoker") return <VideoPokerView />;
   if (slug === "wuerfel") return <DiceView />;
+  if (slug === "hi-lo") return <HiLoView />;
   if (slug === "schwelle") return <LimboView />;
   if (slug === "rubbellos") return <ScratchView />;
   if (slug === "drache-tiger") return <DragonTigerView />;

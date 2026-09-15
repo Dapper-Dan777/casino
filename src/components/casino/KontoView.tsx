@@ -5,6 +5,7 @@ import { formatEuro, formatTime } from "@/lib/casino/format";
 import { streakReward, vipOf } from "@/lib/casino/operator";
 import { useCasino } from "@/lib/casino/store";
 import { formatOdds } from "@/lib/casino/sport";
+import { MISSIONS } from "@/lib/casino/operator";
 import { cn } from "@/lib/utils";
 import { signOut } from "@/lib/auth/client";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
@@ -26,6 +27,10 @@ export function KontoView() {
   const streak = useCasino((s) => s.streak);
   const sessionStarted = useCasino((s) => s.sessionStarted);
   const setCashier = useCasino((s) => s.setCashierOpen);
+  const gamesToday = useCasino((s) => s.gamesToday);
+  const dailyClaimed = useCasino((s) => s.dailyClaimed);
+  const claimedMissions = useCasino((s) => s.claimedMissions);
+  const claimMission = useCasino((s) => s.claimMission);
   const rank = vipOf(wagered);
   const [limit, setLimit] = useState(dayLimit ? String(dayLimit / 100) : "");
   const sessionMin = Math.max(0, Math.floor((Date.now() - (sessionStarted || Date.now())) / 60000));
@@ -70,6 +75,49 @@ export function KontoView() {
           <Link to="/vip">VIP</Link>
         </Button>
       </div>
+
+      <section className="space-y-3">
+        <div>
+          <h2 className="font-display text-2xl">Heute im Club</h2>
+          <p className="mt-1 text-sm text-muted">Kleine Ziele, klare Belohnungen und Fortschritt für diese Session.</p>
+        </div>
+        <div className="grid gap-2 sm:grid-cols-2">
+          {MISSIONS.filter((mission) => mission.id !== "daily").map((mission) => {
+            const progress = mission.id === "wager" ? wageredToday : mission.id === "wins" ? wins : gamesToday.length;
+            const complete = progress >= mission.target;
+            const claimed = claimedMissions.includes(mission.id);
+            return (
+              <div key={mission.id} className="rounded-lg border border-border bg-surface p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="font-medium text-fg">{mission.title}</p>
+                    <p className="mt-1 text-xs text-muted">{mission.hint}</p>
+                  </div>
+                  <span className="text-sm font-semibold text-accent">+{formatEuro(mission.reward)}</span>
+                </div>
+                <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-black/30">
+                  <div className="h-full rounded-full bg-accent transition-[width]" style={{ width: `${Math.min(100, (progress / mission.target) * 100)}%` }} />
+                </div>
+                <div className="mt-2 flex items-center justify-between text-[11px] text-muted">
+                  <span>{Math.min(progress, mission.target)} / {mission.target}</span>
+                  <button
+                    type="button"
+                    disabled={!complete || claimed}
+                    onClick={() => claimMission(mission.id)}
+                    className="font-semibold uppercase tracking-wider text-accent disabled:text-subtle"
+                  >
+                    {claimed ? "Eingelöst" : complete ? "Abholen" : "Läuft"}
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <div className="flex items-center justify-between rounded-lg border border-accent/20 bg-accent/5 px-4 py-3 text-sm">
+          <span><strong className="text-fg">Tageslogin</strong> · {dailyClaimed ? "bereits eingelöst" : "Bonus in der Lobby abholen"}</span>
+          <a href="/#hits" className="text-accent hover:text-fg">Zur Lobby</a>
+        </div>
+      </section>
 
       <section id="wetten" className="space-y-3">
         <h2 className="font-display text-2xl">Wetten</h2>
