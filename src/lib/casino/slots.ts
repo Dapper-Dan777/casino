@@ -668,6 +668,41 @@ export const SLOT_DEFS: Record<string, SlotDef> = {
   },
 };
 
+// Original Aurelia variants using the existing, tested mechanic families.
+SLOT_DEFS["goldene-halle"] = {
+  ...SLOT_DEFS.kirschkoenig!,
+  slug: "goldene-halle",
+  symbols: ranks("fruit"),
+  paylines: FIVE_LINES,
+  freeSpinCount: 8,
+  mechanic: "leiter",
+  leiter: true,
+  allPays2: true,
+  pityAfter: 10,
+};
+SLOT_DEFS["nova-fruits"] = {
+  ...SLOT_DEFS.goldwolf!,
+  slug: "nova-fruits",
+  mechanic: "firelink",
+  firelinkFrom: 5,
+  pityAfter: 10,
+};
+SLOT_DEFS["neon-sentinel"] = {
+  ...SLOT_DEFS["neon-drift"]!,
+  slug: "neon-sentinel",
+  mechanic: "ways",
+  tumble: true,
+  pityAfter: 11,
+};
+SLOT_DEFS["royal-risk"] = {
+  ...SLOT_DEFS.kirschkoenig!,
+  slug: "royal-risk",
+  mechanic: "gamble",
+  leiter: true,
+  freeSpinCount: 6,
+  pityAfter: 11,
+};
+
 export function randomSymbol(def: SlotDef, allowScatter = true): SlotSymbol {
   const pool = allowScatter ? def.symbols : def.symbols.filter((s) => s.kind !== "scatter");
   const s = weightedPick(pool);

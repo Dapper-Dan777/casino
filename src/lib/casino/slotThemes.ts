@@ -98,6 +98,10 @@ export const SLOT_THEMES: Record<string, SlotTheme> = {
   schatzzug: { skin: "train", kicker: "Hold & Collect", reel: "train" },
   "immer-heiss": { skin: "always", kicker: "5 Linien immer an · Stern", reel: "always" },
   "nur-juwelen": { skin: "jewel", kicker: "5 Juwelen · 5 Linien", reel: "jewel" },
+  "goldene-halle": { skin: "fruit", kicker: "5 Linien · Gewinnleiter", reel: "photo" },
+  "nova-fruits": { skin: "always", kicker: "Hold & Collect · Nachdreher", reel: "always" },
+  "neon-sentinel": { skin: "neon", kicker: "Cyber Ways · Tumble", reel: "neon" },
+  "royal-risk": { skin: "blaze", kicker: "Classic · Kartenrisiko", reel: "black" },
 };
 
 export const CONTAIN_REELS = new Set<ReelVariant>(["cream", "black", "hold", "always"]);
