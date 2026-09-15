@@ -13,7 +13,7 @@ import { DiceView } from "@/components/casino/DiceView";
 import { HiLoView } from "@/components/casino/HiLoView";
 import { CasinoHoldemView } from "@/components/casino/CasinoHoldemView";
 import { TowersView } from "@/components/casino/TowersView";
-import { CyborgView } from "@/components/casino/CyborgView";
+import { NeonSentinelSlotView } from "@/components/casino/NeonSentinelSlotView";
 import { LimboView } from "@/components/casino/LimboView";
 import { ScratchView } from "@/components/casino/ScratchView";
 import { DragonTigerView } from "@/components/casino/DragonTigerView";
@@ -58,7 +58,7 @@ function GameInner({ slug }: { slug: string }) {
   if (slug === "hi-lo") return <HiLoView />;
   if (slug === "casino-holdem") return <CasinoHoldemView />;
   if (slug === "towers") return <TowersView />;
-  if (slug === "neon-sentinel") return <CyborgView />;
+  if (slug === "neon-sentinel") return <NeonSentinelSlotView />;
   if (slug === "schwelle") return <LimboView />;
   if (slug === "rubbellos") return <ScratchView />;
   if (slug === "drache-tiger") return <DragonTigerView />;
